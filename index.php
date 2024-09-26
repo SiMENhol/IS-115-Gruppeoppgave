@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotell</title>
+    <link rel="stylesheet" href="../IS-115-Gruppeoppgave/CSS/styles.css" />
+</head>
+<body>
 <?php
-echo "Index fil"
+include('../IS-115-Gruppeoppgave/Include/header.php');
+include('../IS-115-Gruppeoppgave/Include/footer.php');
 ?>
+</body>
+</html>
