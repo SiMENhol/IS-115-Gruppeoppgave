@@ -10,30 +10,24 @@
 <?php
 include('../IS-115-Gruppeoppgave/Include/header.php');
 include('../IS-115-Gruppeoppgave/Include/footer.php');
+include_once('../IS-115-Gruppeoppgave/Include/dbconnection.php');
 
+$sql = "SELECT TypeRom, COUNT(*) AS antall_rom
+FROM Hotellrom
+GROUP BY TypeRom;";
 
-    $romtyper = array (
-  array("Enkeltrom",22,18),
-  array("Dobbeltrom",15,13),
-  array("Duplex",17,15),
-  array("Suite",5,3)
-);
+$result = $conn->query($sql);
 
-echo "Det finnes av romtype ". $romtyper[0][0]." ".$romtyper[0][1]." rom, av disse er ".$romtyper[0][2]." booket. Det er ".$romtyper[0][1] - $romtyper[0][2]." rom ledige."."<br>";
-echo "Det finnes av romtype ". $romtyper[1][0]." ".$romtyper[1][1]." rom, av disse er ".$romtyper[1][2]." booket. Det er ".$romtyper[1][1] - $romtyper[1][2]." rom ledige."."<br>";
-echo "Det finnes av romtype ". $romtyper[2][0]." ".$romtyper[2][1]." rom, av disse er ".$romtyper[2][2]." booket. Det er ".$romtyper[2][1] - $romtyper[2][2]." rom ledige."."<br>";
-echo "Det finnes av romtype ". $romtyper[3][0]." ".$romtyper[3][1]." rom, av disse er ".$romtyper[3][2]." booket. Det er ".$romtyper[3][1] - $romtyper[3][2]." rom ledige."."<br>";
-
-
-/*
-for ($rad = 0; $rad < 4; $rad++) {
-    echo "<ul>";
-      for ($kol = 0; $kol < 3; $kol++) {
-        echo "<li>" . $romtyper[$rad][$kol] . "</li>";
-      }
-    echo "</ul>";
+if ($result->num_rows > 0) {
+  // Loop gjennom resultatene og skriv ut romtypene og antall
+  while($row = $result->fetch_assoc()) {
+      echo "Romtype: " . $row["TypeRom"] . " - Antall rom: " . $row["antall_rom"] . "<a href='/IS-115-Gruppeoppgave/RoomInformation.php'> Book</a>" . "<br>";
   }
-*/
+} else {
+  echo "Ingen rom funnet.";
+}
+$conn->close();
+
 ?>
 </body>
 </html>
