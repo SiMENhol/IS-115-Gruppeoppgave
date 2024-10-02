@@ -1,0 +1,2 @@
+INSERT INTO Hotellrom VALUES (1000000, "Enkeltrom", 1, 2, "Fint enkeltrom med dobbelseng.", 2500);
+INSERT INTO Hotellrom VALUES (1000001, "Dobbeltrom", 1, 2, "Fint dobbeltrom med to enkeltsenger.", 2500);
