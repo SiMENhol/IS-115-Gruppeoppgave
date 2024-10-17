@@ -8,11 +8,11 @@
 </head>
 <body>
 <?php
-include('Include/header.php');
-include('Include/footer.php');
+include('../Include/header.php');
+include('../Include/footer.php');
 
 ?>
-<p>For å sjekke tilgjennelige rom <a href="RoomInformation.php">klikk her</a></p>
+<p>For å sjekke tilgjennelige rom <a href='Sites/RoomInformation.php'>klikk her</a></p>
 </body>
 </html>
 

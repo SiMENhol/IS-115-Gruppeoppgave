@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotell</title>
-    <link rel="stylesheet" href="CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
 </head>
 <body>
 <?php
-include('Include/header.php');
-include('Include/footer.php');
-include_once('Include/dbconnection.php');
+
+//Inkludere 3 files fra include mappen
+include('../../Include/header.php');
+include('../../Include/footer.php');
+include_once('../../Include/dbconnection.php');
 
 $sql = "SELECT TypeRom, COUNT(*) AS antall_rom
 FROM Hotellrom

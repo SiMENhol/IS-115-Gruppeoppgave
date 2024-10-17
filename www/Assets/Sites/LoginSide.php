@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotell</title>
-    <link rel="stylesheet" href="CSS/styles.css" />
-    <link rel="stylesheet" href="CSS/login.css" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/login.css" />
 </head>
 <body>
 <?php
-include('Include/header.php');
-include('Include/footer.php');
+//Inkludere 2 files fra include mappen
+include('../../Include/header.php');
+include('../../Include/footer.php');
+
 
 
   if($_SERVER['REQUEST_METHOD'] === 'POST') {
