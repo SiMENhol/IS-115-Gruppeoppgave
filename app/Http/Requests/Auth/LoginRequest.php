@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 
 class LoginRequest extends FormRequest
 {
@@ -82,4 +83,15 @@ class LoginRequest extends FormRequest
     {
         return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
     }
+
+    // Override the authenticated method
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->isAdmin) { // Assuming you have defined isAdmin on User model
+            return redirect()->route('admin'); // Define this route to your admin page
+        }
+
+        return redirect()->route('home'); // Regular user redirect
+    }
+
 }

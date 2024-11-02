@@ -46,6 +46,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->attributes['isAdmin'] == 1; // Return true if admin, false otherwise
+    }
     public function booking(): HasMany
     {
         return $this->hasMany(Booking::class);
