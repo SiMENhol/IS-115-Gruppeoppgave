@@ -16,7 +16,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">
-                        {{ __('Chirps') }}
+                        {{ __('Booking') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                        {{ __('Admin dashboard') }}
                     </x-nav-link>
                 </div>
             </div>

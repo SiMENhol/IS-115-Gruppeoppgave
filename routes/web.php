@@ -17,13 +17,23 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::resource('admin', AdminController::class)
+        ->only(['index', 'store']); // index will load the table data
+});
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    Route::get('admin/users', [AdminController::class, 'viewUsers'])->name('admin.users');
+});
+
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    Route::get('admin/selecteduser', [AdminController::class, 'viewSelectedUser'])->name('admin.selecteduser');
 });
 
 
 Route::resource('booking', BookingController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
+
+
 
 
 Route::middleware('auth')->group(function () {
