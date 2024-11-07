@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    protected $table = 'rom';
+    protected $table = 'room';
     use HasFactory;
 
     protected $fillable = [

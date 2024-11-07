@@ -31,10 +31,11 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> <a style="color: grey" href='adduser'>Add a new user </a>
                 </div></div></div></div>
 
     </x-app-layout>
 
 </body>
 </html>
+

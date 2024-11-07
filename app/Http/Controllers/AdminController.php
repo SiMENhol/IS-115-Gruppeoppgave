@@ -26,4 +26,10 @@ class AdminController extends Controller
             'user' => $request->user(),
         ]);
     }
+    public function addUser(Request $request)
+    {
+        return view('admin.adduser', [
+            'user' => $request->user(),
+        ]);
+    }
 }
