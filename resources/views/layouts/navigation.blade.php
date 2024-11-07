@@ -13,11 +13,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Welcome') }}
                     </x-nav-link>
                     <x-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">
-                        {{ __('Chirps') }}
+                        {{ __('Booking') }}
                     </x-nav-link>
+                    @if(Auth::user()->isAdmin == 1)
+                    <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                        {{ __('Admin dashboard') }}
+                    </x-nav-link>
+                @endif
                 </div>
             </div>
 
