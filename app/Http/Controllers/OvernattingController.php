@@ -13,9 +13,9 @@ class OvernattingController extends Controller
 {
         public function index(): View
         {
-            return view('overnatting', [
-                'rooms'=>Room::all(),
-            ]);
+            $rooms = Room::all();
+            $roomTypesDisplayed = [];
+            return view('overnatting', compact('rooms', 'roomTypesDisplayed'));
         }
         /**
          * Show the form for creating a new resource.
