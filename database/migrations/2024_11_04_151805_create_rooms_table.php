@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('roomId');
             $table->string('roomType');
             $table->integer('places');
+            $table->string('beds');
             $table->integer('roomStatus');
             $table->longText('roomDesc');
             $table->integer('price');

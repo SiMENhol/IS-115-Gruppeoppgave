@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OvernattingController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
@@ -33,6 +34,10 @@ Route::post('/room/store', [RoomController::class, 'store'])->name('room.store')
 
 Route::resource('booking', BookingController::class)
     ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('overnatting', OvernattingController::class)
+    ->only(['index'])
     ->middleware(['auth', 'verified']);
 
 
