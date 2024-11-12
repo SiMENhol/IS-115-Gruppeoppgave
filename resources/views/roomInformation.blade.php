@@ -9,7 +9,7 @@
                     <div class="p-6 flex space-x-2">
                         <div class="flex-1">
                             <!-- Midlertidig bilde -->
-                            <img src="https://sonspa.no/wp-content/uploads/2018/05/Enkeltrom-scaled.jpg"></td>
+                            <img src="https://sonspa.no/wp-content/uploads/2018/05/Enkeltrom-scaled.jpg">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <span class="text-lg text-gray-800">{{ $room->roomType }}</span>
@@ -17,7 +17,7 @@
                                     <small class="ml-2 text-sm text-gray-600">{{ $room->beds }}</small>
                                 </div>
                             </div>
-                            <p class="mt-4 text-lg text-gray-900">{{ $room->price }} kr</p>
+                            <p class="mt-4 text-xl text-gray-900">{{ $room->price }} kr</p>
                             <p class="mt-4 text-gray-900">{{ $room->roomDesc }}</p>
                         </div>
                     </div>

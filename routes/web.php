@@ -5,12 +5,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OvernattingController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomInformationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware(['auth', 'verified'])->name('welcome');;
 
 
 Route::get('/dashboard', function () {
@@ -36,7 +37,7 @@ Route::resource('booking', BookingController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
 
-Route::resource('overnatting', OvernattingController::class)
+Route::resource('roomInformation', RoomInformationController::class)
     ->only(['index'])
     ->middleware(['auth', 'verified']);
 

@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
-class OvernattingController extends Controller
+class RoomInformationController extends Controller
 {
         public function index(): View
         {
             $rooms = Room::all();
             $roomTypesDisplayed = [];
-            return view('overnatting', compact('rooms', 'roomTypesDisplayed'));
+            return view('roomInformation', compact('rooms', 'roomTypesDisplayed'));
         }
         /**
          * Show the form for creating a new resource.
