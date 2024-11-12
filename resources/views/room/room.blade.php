@@ -40,7 +40,24 @@
                     <td>{{ $room->roomId }}</td>
                     <td>{{ $room->roomType }}</td>
                     <td>{{ $room->places }}</td>
-                    <td>{{ $room->roomStatus }}</td>
+                    <td>
+                    @switch($room->roomStatus)
+                        @case(0)
+                            Available
+                            @break
+                        @case(1)
+                            Booked
+                            @break
+                        @case(2)
+                            Cleaning
+                            @break
+                        @case(3)
+                            Closed
+                            @break
+                        @default
+                            Unknown Status
+                    @endswitch
+                    </td>
                     <td>{{ $room->roomDesc }}</td>
                     <td>{{ $room->price }}</td>
                     <td><a href="{{ route('room.edit', ['roomId' => $room->roomId]) }}">Edit</a></td>

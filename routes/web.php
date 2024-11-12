@@ -53,10 +53,9 @@ Route::resource('overnatting', OvernattingController::class)
         //Route::delete('/room', [RoomController::class, 'destroy'])->name('room.destroy');
     });
 
+    Route::post('/add_booking', [BookingController::class, 'add_booking']);
 
-
-
-
+    Route::get('detailedroom', [BookingController::class, 'viewdetail']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    protected $table = 'room';
+    protected $table = 'reservation';
     use HasFactory;
 
     protected $fillable = [
-        'message',
+        'reservationId',
+        'userId',
+        'roomId',
+        'checkInDato',
+        'checkOutDato',
+        'reservationStatus'
     ];
 
     public function user(): BelongsTo
