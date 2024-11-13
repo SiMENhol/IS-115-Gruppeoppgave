@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -27,7 +28,10 @@ class BookingController extends Controller
         {
             return view('detailedroom');
         }
-
+        public function viewroom(): View
+        {
+            return view('selectroom');
+        }
         /**
          * Show the form for creating a new resource.
          */
@@ -79,7 +83,32 @@ class BookingController extends Controller
         }
     }
 
+    public function search_room(Request $request)
+    {
 
+        $requiredPlaces = request('places');
+        $userCheckIn = request('checkInDato');
+        $userCheckOut = request('checkOutDato');
+
+        $roomType = $request->roomType;
+        $isRoomAvailable = Room::query()
+        ->leftJoin('reservation', 'room.roomId', '=', 'reservation.roomId')
+        ->where('room.places', '=', $requiredPlaces)
+        ->where(function($query) use ($userCheckIn, $userCheckOut) {
+            $query->whereNull('reservation.checkInDato')
+                  ->orWhereNull('reservation.checkOutDato')
+                  ->orWhere('reservation.checkOutDato', '<=', $userCheckIn)
+                  ->orWhere('reservation.checkInDato', '>=', $userCheckOut);
+        })
+        ->select('room.roomId', 'room.places', 'room.roomType', 'room.roomDesc')
+        ->get();
+
+        return view('selectroom', ['room' => $isRoomAvailable,]);
+
+
+
+
+    }
 
         /**
          * Store a newly created resource in storage.

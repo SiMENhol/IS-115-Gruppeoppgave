@@ -23,11 +23,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->only(['index', 'store']); // index will load the table data
 });
 Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('admin/users', [AdminController::class, 'viewUsers'])->name('admin.users');
+    Route::get('admin/users/users', [AdminController::class, 'viewUsers'])->name('admin.users.users');
 });
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('admin/selecteduser', [AdminController::class, 'viewSelectedUser'])->name('admin.selecteduser');
+    Route::get('admin/users/selecteduser', [AdminController::class, 'viewSelectedUser'])->name('admin.selecteduser');
 });
 
 Route::post('/room/store', [RoomController::class, 'store'])->name('room.store');
@@ -42,18 +42,20 @@ Route::resource('overnatting', OvernattingController::class)
 
 
     Route::middleware(['auth', IsAdmin::class])->group(function () {
-        Route::get('room', [RoomController::class, 'index'])->name('room');
+        Route::get('admin/room', [RoomController::class, 'index'])->name('room');
     });
 
     Route::middleware(['auth', IsAdmin::class])->group(function () {
-        Route::get('room', [RoomController::class, 'index'])->name('room');
-        Route::get('room/create', [RoomController::class, 'create'])->name('room.create');
-        Route::get('/room/edit/{roomId}', [RoomController::class, 'edit'])->name('room.edit');
-        Route::patch('/room/edit/{roomId}', [RoomController::class, 'update'])->name('room.update');
+        Route::get('/admin/room', [RoomController::class, 'index'])->name('room');
+        Route::get('/admin/room/create', [RoomController::class, 'create'])->name('room.create');
+        Route::get('/admin/room/edit/{roomId}', [RoomController::class, 'edit'])->name('room.edit');
+        Route::patch('/admin/room/edit/{roomId}', [RoomController::class, 'update'])->name('room.update');
         //Route::delete('/room', [RoomController::class, 'destroy'])->name('room.destroy');
     });
 
     Route::post('/add_booking', [BookingController::class, 'add_booking']);
+    Route::post('/search_room', [BookingController::class, 'search_room']);
+ Route::get('/selectroom', [BookingController::class, 'viewroom']);
 
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
 Route::middleware('auth')->group(function () {

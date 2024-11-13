@@ -25,14 +25,9 @@ class Room extends Model
         'roomDesc',
         'price',
     ];
-    // Optionally disable auto-incrementing (if it's not default) and timestamps if needed
-    public $incrementing = true;
 
-    // Relationships
-   // public function reservations()
-    //{
-     //   return $this->hasMany(Reservation::class, 'romId', 'romId');
-    //}
+
+
 }
 
 
