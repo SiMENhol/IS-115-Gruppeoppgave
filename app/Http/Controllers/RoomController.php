@@ -15,7 +15,7 @@ class RoomController extends Controller
     public function index() : View
     {
         $rooms = Room::all(); // Retrieve all records from the users table
-        return view('room.room', compact('rooms')); // Pass data to the view
+        return view('admin.room.room', compact('rooms')); // Pass data to the view
     }
 
 
@@ -24,7 +24,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('room.create');
+        return view('admin.room.create');
     }
 
     /**
@@ -64,7 +64,7 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($roomId); // Find the room by ID or throw a 404 error
 
-        return view('room.edit', compact('room'));
+        return view('admin.room.edit', compact('room'));
     }
 
     /**

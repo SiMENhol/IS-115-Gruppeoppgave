@@ -17,18 +17,18 @@ class AdminController extends Controller
     public function viewUsers()
     {
         $users = User::all(); // Retrieve all records from the users table
-        return view('admin.users', compact('users')); // Pass data to the view
+        return view('admin.users.users', compact('users')); // Pass data to the view
     }
 
     public function viewSelectedUser(Request $request)
     {
-        return view('admin.selecteduser', [
+        return view('admin.users.selecteduser', [
             'user' => $request->user(),
         ]);
     }
     public function addUser(Request $request)
     {
-        return view('admin.adduser', [
+        return view('admin.users.adduser', [
             'user' => $request->user(),
         ]);
     }

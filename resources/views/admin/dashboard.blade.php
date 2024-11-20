@@ -13,10 +13,10 @@
                 </div>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <a href='admin/users'>Oversikt over brukere</a>
+                    <a href='admin/users/users'>Oversikt over brukere</a>
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <a href='room'>Oversikt over rom</a>
+                    <a href='admin/room'>Oversikt over rom</a>
                 </div>
 
 
