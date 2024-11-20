@@ -56,8 +56,10 @@ Route::resource('overnatting', OvernattingController::class)
     Route::post('/add_booking', [BookingController::class, 'add_booking']);
     Route::post('/search_room', [BookingController::class, 'search_room']);
  Route::get('/selectroom', [BookingController::class, 'viewroom']);
-
+ Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

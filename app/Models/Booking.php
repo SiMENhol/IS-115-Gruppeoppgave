@@ -20,8 +20,9 @@ class Booking extends Model
         'reservationStatus'
     ];
 
-    public function user(): BelongsTo
+    public function room(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Room::class, 'roomId', 'roomId');
     }
+
 }

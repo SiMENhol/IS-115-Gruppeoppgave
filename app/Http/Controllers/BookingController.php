@@ -85,7 +85,7 @@ class BookingController extends Controller
 
     public function search_room(Request $request)
     {
-
+        $roomId = request('roomId');
         $requiredPlaces = request('places');
         $userCheckIn = request('checkInDato');
         $userCheckOut = request('checkOutDato');
@@ -93,22 +93,48 @@ class BookingController extends Controller
         $roomType = $request->roomType;
         $isRoomAvailable = Room::query()
         ->leftJoin('reservation', 'room.roomId', '=', 'reservation.roomId')
-        ->where('room.places', '=', $requiredPlaces)
+
+        ->where('room.places', '>=', $requiredPlaces)
         ->where(function($query) use ($userCheckIn, $userCheckOut) {
             $query->whereNull('reservation.checkInDato')
                   ->orWhereNull('reservation.checkOutDato')
                   ->orWhere('reservation.checkOutDato', '<=', $userCheckIn)
                   ->orWhere('reservation.checkInDato', '>=', $userCheckOut);
+
         })
-        ->select('room.roomId', 'room.places', 'room.roomType', 'room.roomDesc')
+        ->selectRaw('
+    MIN(room.roomId) as roomId,
+    room.roomType,
+    MIN(room.places) as places,
+    room.roomDesc,
+    room.price,
+    MIN(reservation.checkOutDato) as checkOutDato,
+    MIN(reservation.checkInDato) as checkInDato
+')
+        ->groupBy('room.roomType', 'room.roomDesc', 'room.price')
+        ->orderBy('places', 'asc')
         ->get();
 
-        return view('selectroom', ['room' => $isRoomAvailable,]);
 
-
-
-
+        return view('selectroom', ['rooms' => $isRoomAvailable, 'roomId' => $roomId, 'userCheckIn' => $userCheckIn, 'userCheckOut' => $userCheckOut]);
     }
+
+            /**
+         * Display the specified resource.
+         */
+        public function confirm_booking(Request $request, $roomId)
+        {
+            $roomId = request('roomId');
+            $userCheckIn = request('userCheckIn');
+            $userCheckOut = request('userCheckOut');
+            $roomInfo = Room::query()
+                ->leftJoin('reservation', 'room.roomId', '=', 'reservation.roomId')
+                ->select('room.roomId', 'room.roomType', 'room.places', 'room.roomDesc', 'room.price')
+                ->where('room.roomId', $roomId)
+                ->get();
+
+            return view('confirmbooking', ['room' => $roomInfo, 'roomId' => $roomId, 'userCheckIn' => $userCheckIn, 'userCheckOut' => $userCheckOut]);
+        }
 
         /**
          * Store a newly created resource in storage.
