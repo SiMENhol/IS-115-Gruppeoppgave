@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 
 Route::get('/', function () {
-    return view('welcome');
-})->middleware(['auth', 'verified'])->name('welcome');;
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('welcome');
 
 
 Route::get('/dashboard', function () {
@@ -54,14 +54,18 @@ Route::resource('roomInformation', RoomInformationController::class)
         //Route::delete('/room', [RoomController::class, 'destroy'])->name('room.destroy');
     });
 
-    Route::post('/add_booking', [BookingController::class, 'add_booking']);
-    Route::post('/search_room', [BookingController::class, 'search_room']);
- Route::get('/selectroom', [BookingController::class, 'viewroom']);
- Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);
+    Route::post('/add_booking', [BookingController::class, 'add_booking'])->name('add_booking');
+    Route::post('/search_room', [BookingController::class, 'search_room'])->name('search.room');
+
+   // Route::get('/selectroom', [BookingController::class, 'viewroom']);
+    //Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
+    //Route::post('/confirm_booking', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
+    Route::post('/confirm_booking', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
 
+    //Route::post('bookincomplete/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
 
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

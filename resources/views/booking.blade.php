@@ -26,17 +26,18 @@
         <form action="{{ url('search_room') }}" method="POST">
 
                 @csrf
+                <!-- Places -->
+                <div class="mt-4">
+                <x-input-label for="places" :value="__('How many guests are you?')" />
+                    <x-text-input id="places" class="block mt-1 w-full" type="number" name="places" :value="old('places')" required />
+                    <x-input-error :messages="$errors->get('places')" class="mt-2" />
+                </div>
 
-
-
-                        <!-- Places -->
-        <div class="mt-4">
-            <x-input-label for="places" :value="__('How many guests are you?')" />
-            <x-text-input id="places" class="block mt-1 w-full" type="number" name="places" :value="old('places')" required />
-            <x-input-error :messages="$errors->get('places')" class="mt-2" />
-        </div>
-
-
+                <div class="mt-4">
+                    <x-input-label for="places" value="test" />
+                    <x-text-input id="places" class="block mt-1 w-full" type="number" name="places" :value="old('places')" required />
+                    <x-input-error :messages="$errors->get('places')" class="mt-2" />
+                </div>
 
 
                 <!-- Check-In Date -->
