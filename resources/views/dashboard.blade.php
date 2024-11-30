@@ -104,7 +104,19 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
-                <p>Upcoming stays</p>
+                <p class="font-semibold text-xl">Upcoming stays</p>
+                @foreach ($booking as $book)
+                    @if ($book->userId === Auth::user()->id)
+                        @if (time() < strtotime($book->checkOutDato))
+                            <div> <!-- Give more separation -->
+                                <span>
+                                    {{ Carbon\Carbon::parse($book->checkInDato)->format('l d. F') }} -
+                                    {{ Carbon\Carbon::parse($book->checkOutDato)->format('l d. F') }}<br>
+                                </span>
+                            </div>
+                        @endif
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
@@ -112,7 +124,19 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
-                <p>Previous stays</p>
+                <p class="font-semibold text-xl">Previous stays</p>
+                @foreach ($booking as $book)
+                    @if ($book->userId === Auth::user()->id)
+                        @if (time() > strtotime($book->checkOutDato))
+                            <div> <!-- Give more separation -->
+                                <span>
+                                    {{ Carbon\Carbon::parse($book->checkInDato)->format('d. F Y') }} -
+                                    {{ Carbon\Carbon::parse($book->checkOutDato)->format('d. F Y') }}<br>
+                                </span>
+                            </div>
+                        @endif
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
