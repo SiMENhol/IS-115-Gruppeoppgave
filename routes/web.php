@@ -1,22 +1,26 @@
 <?php
 
+use App\Models\Booking;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\OvernattingController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomInformationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard', [
+        'booking' => Booking::all()
+    ]);
 })->middleware(['auth', 'verified'])->name('welcome');
 
-
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', [
+        'booking' => Booking::all()
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
