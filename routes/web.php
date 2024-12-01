@@ -13,13 +13,15 @@ Route::get('/', function () {
     return view('dashboard', [
         'booking' => Booking::all()
     ]);
-})->middleware(['auth', 'verified'])->name('welcome');
+})->name('welcome');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
         'booking' => Booking::all()
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
+
 
 
 
@@ -38,12 +40,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 Route::post('/room/store', [RoomController::class, 'store'])->name('room.store');
 
 Route::resource('booking', BookingController::class)
-    ->only(['index', 'store'])
-    ->middleware(['auth', 'verified']);
+    ->only(['index', 'store']);
 
 Route::resource('roomInformation', RoomInformationController::class)
-    ->only(['index'])
-    ->middleware(['auth', 'verified']);
+    ->only(['index']);
+    //->middleware(['auth', 'verified']);
 
 
     Route::middleware(['auth', IsAdmin::class])->group(function () {
@@ -65,9 +66,13 @@ Route::resource('roomInformation', RoomInformationController::class)
     //Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
     //Route::post('/confirm_booking', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
-    Route::post('/confirm_booking', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
+    Route::post('/booking_overview', [BookingController::class, 'booking_overview'])->name('booking_overview');
+    Route::post('/create_booking', [BookingController::class, 'create_booking'])->name('create_booking');
+    Route::post('/processing_payment', [BookingController::class, 'processing_payment'])->name('processing_payment');
+    Route::post('/search_room_noId', [BookingController::class, 'search_room_noId'])->name('search_room_noId');
 
     //Route::post('bookincomplete/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
+    Route::post('/booking_payment', [BookingController::class, 'booking_payment'])->name('booking_payment');
 
     Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

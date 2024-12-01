@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('roomType');
             $table->integer('places');
             $table->string('beds');
-            $table->integer('roomStatus');
             $table->longText('roomDesc');
             $table->integer('price');
             $table->timestamps();
@@ -24,6 +23,7 @@ return new class extends Migration
 
         Schema::create('reservation', function (Blueprint $table) {
             $table->id('reservationId');
+            $table->integer('groupBookingId')->nullable();
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('roomId');
             $table->dateTime('checkInDato');

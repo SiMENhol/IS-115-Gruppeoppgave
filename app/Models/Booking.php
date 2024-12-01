@@ -17,7 +17,8 @@ class Booking extends Model
         'roomId',
         'checkInDato',
         'checkOutDato',
-        'reservationStatus'
+        'reservationStatus',
+        'groupBookingId'
     ];
 
     public function room(): BelongsTo
