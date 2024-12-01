@@ -81,6 +81,10 @@ class BookingController extends Controller
                 })
                 ->values(); // Reset keys
 
+                if ($availableRoomsForThisSelection->isEmpty()) {
+                    return redirect()->back()->withErrors(['message' => "There is no available room(s) for the selected dates"]);
+                }
+
             $availableRooms[$index + 1] = $availableRoomsForThisSelection;
 
             // Mark assigned room IDs as used
@@ -89,17 +93,18 @@ class BookingController extends Controller
             }
         }
 
-        return view('selectroom', [
+        return view('booking.room-search', [
             'availableRooms' => $availableRooms,
             'numRooms' => $validated['numRooms'],
             'userCheckIn' => $userCheckIn->toDateString(),
             'userCheckOut' => $userCheckOut->toDateString(),
+
         ]);
     }
 
-    public function confirm_booking(Request $request)
+    public function booking_overview(Request $request)
     {
-        // Validate the input
+        // Validate input
         $validated = $request->validate([
             'selectedRooms' => 'required|array|min:1',
             'selectedRooms.*' => 'required|exists:room,roomId',
@@ -107,33 +112,112 @@ class BookingController extends Controller
             'userCheckOut' => 'required|date|after:userCheckIn',
         ]);
 
+        // Parse check-in and check-out dates
+        $userCheckIn = Carbon::parse($validated['userCheckIn']);
+        $userCheckOut = Carbon::parse($validated['userCheckOut']);
+
+        // Ensure that check-in date is always before check-out date
+        if ($userCheckIn->greaterThanOrEqualTo($userCheckOut)) {
+            return redirect()->back()->withErrors(['message' => 'The check-in date must be before the check-out date.']);
+        }
+
+        // Calculate the number of nights
+        $numNights = $userCheckIn->diffInDays($userCheckOut);
+
+        // Fetch room details
+        $selectedRooms = Room::whereIn('roomId', $validated['selectedRooms'])->get();
+
+        // Calculate total price
+        $totalPrice = $selectedRooms->sum(function ($room) use ($numNights) {
+            return $room->price * $numNights;
+        });
+
+        return view('booking.booking-overview', [
+            'selectedRooms' => $selectedRooms,
+            'userCheckIn' => $userCheckIn->toDateString(),
+            'userCheckOut' => $userCheckOut->toDateString(),
+            'totalPrice' => $totalPrice,
+            'numNights' => $numNights,
+        ]);
+    }
+
+    public function create_booking(Request $request)
+    {
+        $validated = $request->validate([
+            'selectedRooms' => 'required|string',
+            'userCheckIn' => 'required|date|after_or_equal:today',
+            'userCheckOut' => 'required|date|after:userCheckIn',
+        ]);
+
         $userCheckIn = $validated['userCheckIn'];
         $userCheckOut = $validated['userCheckOut'];
 
-        // Ensure no overlapping bookings for the selected rooms
-        foreach ($validated['selectedRooms'] as $roomId) {
+        // Convert selectedRooms back to array
+        $roomIds = explode(',', $validated['selectedRooms']);
+
+        // Ensure no overlapping bookings
+        foreach ($roomIds as $roomId) {
             if (!$this->isRoomAvailable($roomId, $userCheckIn, $userCheckOut)) {
                 return redirect()->back()->withErrors(['message' => "Room $roomId is already booked during the selected dates."]);
             }
         }
-
-        // Create bookings for each selected room
+        //Check for det latest
+        $latestGroupBookingId = Booking::max('groupBookingId');
+        $groupBookingId = $latestGroupBookingId ? $latestGroupBookingId + 1 : 1;
+        // Create bookings
         $reservations = [];
-        foreach ($validated['selectedRooms'] as $roomId) {
+        foreach ($roomIds as $roomId) {
             $reservations[] = Booking::create([
                 'roomId' => $roomId,
                 'userId' => Auth::id(),
                 'checkInDato' => $userCheckIn,
                 'checkOutDato' => $userCheckOut,
                 'reservationStatus' => 'booked',
+                'groupBookingId' => $groupBookingId,
+
             ]);
         }
 
-        // Return the confirmation view
-        return view('bookincomplete', [
+        return view('booking.create-booking', [
             'reservations' => $reservations,
             'checkIn' => $userCheckIn,
             'checkOut' => $userCheckOut,
         ]);
+    }
+    public function booking_payment(Request $request)
+    {
+        $userCheckIn = $request->input('userCheckIn');
+        $userCheckOut = $request->input('userCheckOut');
+        $selectedRooms = explode(',', $request->input('selectedRooms'));
+        $totalPrice = $request->input('totalPrice');
+
+
+        return view('booking.booking-payment', [
+            'userCheckIn' => $userCheckIn,
+            'userCheckOut' => $userCheckOut,
+            'selectedRooms' => $selectedRooms,
+            'totalPrice' => $totalPrice,
+        ]);
+    }
+    public function processing_payment(Request $request)
+    {
+        // Pass data from payment form to the processing page
+        $userCheckIn = $request->input('userCheckIn');
+        $userCheckOut = $request->input('userCheckOut');
+        $selectedRooms = $request->input('selectedRooms');
+        $totalPrice = $request->input('totalPrice');
+
+        return view('booking.processing-payment', [
+            'userCheckIn' => $userCheckIn,
+            'userCheckOut' => $userCheckOut,
+            'selectedRooms' => $selectedRooms,
+            'totalPrice' => $totalPrice,
+        ]);
+    }
+
+
+    public function search_room_noId(Request $request)
+    {
+        return view('booking.search-room-noId');
     }
 }
