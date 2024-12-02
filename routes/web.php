@@ -66,17 +66,11 @@ Route::resource('roomInformation', RoomInformationController::class)
 
     Route::post('/add_booking', [BookingController::class, 'add_booking'])->name('add_booking');
     Route::post('/search_room', [BookingController::class, 'search_room'])->name('search.room');
-
-   // Route::get('/selectroom', [BookingController::class, 'viewroom']);
-    //Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
-    //Route::post('/confirm_booking', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
     Route::post('/booking_overview', [BookingController::class, 'booking_overview'])->name('booking_overview');
     Route::post('/create_booking', [BookingController::class, 'create_booking'])->name('create_booking');
     Route::post('/processing_payment', [BookingController::class, 'processing_payment'])->name('processing_payment');
     Route::post('/search_room_noId', [BookingController::class, 'search_room_noId'])->name('search_room_noId');
-
-    //Route::post('bookincomplete/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking'])->name('confirm_booking');
     Route::post('/booking_payment', [BookingController::class, 'booking_payment'])->name('booking_payment');
 
     Route::middleware('auth')->group(function () {
