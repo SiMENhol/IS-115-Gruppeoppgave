@@ -1,4 +1,7 @@
 <x-app-layout>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -46,4 +49,6 @@
             </x-primary-button>
         </div>
     </form>
+        </div>
+    </div>
 </x-app-layout>

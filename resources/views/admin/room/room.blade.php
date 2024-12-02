@@ -28,10 +28,9 @@
             <tr>
                 <th>ID</th>
                 <th>Type</th>
-                <th>Antall senger</th>
-                <th>Status</th>
-                <th>Beskrivelse</th>
-                <th>Pris</th>
+                <th>Places</th>
+                <th>Beds</th>
+                <th>Price each night</th>
             </tr>
         </thead>
         <tbody>
@@ -40,33 +39,33 @@
                     <td>{{ $room->roomId }}</td>
                     <td>{{ $room->roomType }}</td>
                     <td>{{ $room->places }}</td>
-                    <td>
-                    @switch($room->roomStatus)
-                        @case(0)
-                            Available
-                            @break
-                        @case(1)
-                            Booked
-                            @break
-                        @case(2)
-                            Cleaning
-                            @break
-                        @case(3)
-                            Closed
-                            @break
-                        @default
-                            Unknown Status
-                    @endswitch
-                    </td>
-                    <td>{{ $room->roomDesc }}</td>
+                    <td>{{ $room->beds}}</td>
                     <td>{{ $room->price }}</td>
-                    <td><a href="{{ route('room.edit', ['roomId' => $room->roomId]) }}">Edit</a></td>
-
+                    <td>  <x-primary-button class="ms-1"><a href="{{ route('room.edit', ['roomId' => $room->roomId]) }}">Edit</a></x-primary-button></td>
+                    <td>
+                    <form action="{{ route('room.destroy', $room->roomId) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this room?');">
+                        @csrf
+                        @method('DELETE') <!-- This specifies the request method as DELETE -->
+                        <x-primary-button class="bg-red-500">
+                            Delete
+                        </x-primary-button>
+                    </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
-    </table> <a href='room/create'>Add a new room </a>
-                </div></div></div></div>
+    </table>
+
+    <x-primary-button class="ms-1">
+        <a href="{{ route('room.create') }}" class="text-white no-underline">
+            Add a new room
+        </a>
+    </x-primary-button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     </x-app-layout>
 

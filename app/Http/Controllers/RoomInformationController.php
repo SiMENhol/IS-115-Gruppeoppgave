@@ -3,68 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class RoomInformationController extends Controller
 {
+    /**
+     * View Room Information.
+     */
         public function index(): View
         {
-            $rooms = Room::all();
-            $roomTypesDisplayed = [];
-            return view('roomInformation', compact('rooms', 'roomTypesDisplayed'));
+            $rooms = Room::all(); // Gets all the data from model Room, which corresponds to the database
+            $roomTypesDisplayed = []; // Makes an array
+            return view('roomInformation', compact('rooms', 'roomTypesDisplayed')); // Returns view with compact sending the variables to the view
         }
-        /**
-         * Show the form for creating a new resource.
-         */
-        public function create()
-        {
-            //
-        }
-
-        /**
-         * Store a newly created resource in storage.
-         */
-        public function store(Request $request)
-        {
-            //
-        }
-
-        /**
-         * Display the specified resource.
-         */
-        public function show(Room $rom)
-        {
-            //
-        }
-
-        /**
-         * Show the form for editing the specified resource.
-         */
-        public function edit(Room $rom)
-        {
-            //
-        }
-
-        /**
-         * Update the specified resource in storage.
-         */
-        public function update(Request $request, Room $rom)
-        {
-            //
-        }
-
-        /**
-         * Remove the specified resource from storage.
-         */
-        public function destroy(Room $rom)
-        {
-            //
-        }
-
     }
 
 

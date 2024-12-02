@@ -30,8 +30,14 @@
 
             <div class="p-4 flex justify-center" >
                 <x-primary-button class="ms-3">
+                    <a href="{{ route('dashboard') }}" class="text-white no-underline">
+                        Go back to Dashboard
+                    </a>
+                </x-primary-button>
+                <x-primary-button class="ms-3">
                     Proceed to payment
                 </x-primary-button>
+                </div>
             </div>
         </form>
     </div>
