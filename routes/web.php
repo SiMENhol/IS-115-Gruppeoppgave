@@ -61,6 +61,7 @@ Route::resource('roomInformation', RoomInformationController::class)
 
     Route::post('/add_booking', [BookingController::class, 'add_booking'])->name('add_booking');
     Route::post('/search_room', [BookingController::class, 'search_room'])->name('search.room');
+    Route::post('/search_date', [BookingController::class, 'search_date'])->name('search.date');
 
    // Route::get('/selectroom', [BookingController::class, 'viewroom']);
     //Route::get('confirmbooking/{roomId}/{userCheckIn}/{userCheckOut}', [BookingController::class, 'confirm_booking']);

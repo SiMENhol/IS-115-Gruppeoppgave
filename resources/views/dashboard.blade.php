@@ -56,9 +56,9 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
                             <template x-for="room in Array.from({ length: numRooms }, (_, i) => i + 1)" :key="room">
                                 <div class="border p-4 rounded shadow-sm bg-gray-50">
-                                    <h4 class="text-gray-900 dark:text-gray-100 mb-2">Room <span x-text="room"></span></h4>
+                                    <h4 class="text-gray-900 mb-2">Room <span x-text="room"></span></h4>
                                     <div class="flex items-center">
-                                        <label class="text-gray-900 dark:text-gray-100 mr-2">Guests:</label>
+                                        <label class="text-gray-900 mr-2">Guests:</label>
                                         <input type="number" :name="`rooms[${room}][places]`" min="1" value="1" class="border p-1 rounded w-16">
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                 <x-nav-link :href="route('roomInformation.index')" :active="request()->routeIs('roomInformation.index')"
                     class="mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
                 >
-                    <span class="mt-2">Explore Rooms</span>
+                    <span class="mt-2 text-white">Explore Rooms</span>
                 </x-nav-link>
                 </button>
             </div>

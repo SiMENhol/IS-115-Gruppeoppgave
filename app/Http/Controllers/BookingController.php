@@ -220,4 +220,18 @@ class BookingController extends Controller
     {
         return view('booking.search-room-noId');
     }
+
+    public function search_date(Request $request)
+    {
+        $validated = $request->validate([
+            'roomType' => 'required|string|max:255',
+        ]);
+
+        $roomType = $validated['roomType'];
+
+        return view('booking.date-search', [
+            'roomType' => $roomType,
+
+        ]);
+    }
 }
