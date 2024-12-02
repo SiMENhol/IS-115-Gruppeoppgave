@@ -139,20 +139,31 @@
 
     <br>
 
+    @php
+        $upcomingStays = [];
+        $previousStays = [];
+    @endphp
+
+    @foreach ($booking as $book)
+        @if (Auth::user() && $book->userId === Auth::user()->id)
+            @if (!array_key_exists($book->groupBookingId, $upcomingStays) && time() < strtotime($book->checkOutDato))
+                @php
+                    $upcomingStays[$book->groupBookingId] = $book;
+                @endphp
+            @elseif (!array_key_exists($book->groupBookingId, $previousStays) && time() > strtotime($book->checkOutDato))
+                @php
+                    $previousStays[$book->groupBookingId] = $book;
+                @endphp
+            @endif
+        @endif
+    @endforeach
+
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <p class="font-semibold text-2xl mb-4">Upcoming Stays</p>
-
-                @php
-                    $hasUpcomingStays = false;
-                @endphp
-
-                @foreach ($booking as $book)
-                    @if (Auth::user() && $book->userId === Auth::user()->id && time() < strtotime($book->checkOutDato))
-                        @php
-                            $hasUpcomingStays = true;
-                        @endphp
+                @if (!empty($upcomingStays))
+                    @foreach ($upcomingStays as $stay)
                         <div class="mb-6 p-4 border rounded-lg shadow-md bg-gray-100 dark:bg-gray-900">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -160,11 +171,11 @@
                                         Fjordview Hotel
                                     </h3>
                                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                                        {{ Carbon\Carbon::parse($book->checkInDato)->format('l, d F Y') }}
-                                        - {{ Carbon\Carbon::parse($book->checkOutDato)->format('l, d F Y') }}
+                                        {{ Carbon\Carbon::parse($stay->checkInDato)->format('l, d F Y') }}
+                                        - {{ Carbon\Carbon::parse($stay->checkOutDato)->format('l, d F Y') }}
                                     </p>
                                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                                        Duration: {{ Carbon\Carbon::parse($book->checkInDato)->diffInDays(Carbon\Carbon::parse($book->checkOutDato)) }} nights
+                                        Duration: {{ Carbon\Carbon::parse($stay->checkInDato)->diffInDays(Carbon\Carbon::parse($stay->checkOutDato)) }} nights
                                     </p>
                                 </div>
                                 <div class="ml-auto">
@@ -177,7 +188,7 @@
                             <div class="mt-4 flex justify-between items-center">
                                 <div>
                                     <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        <span class="font-semibold">Total Price:</span> {{ number_format($book->price ?? 0, 0) }} NOK
+                                        <span class="font-semibold">Total Price:</span> {{ number_format($stay->price ?? 0, 0) }} NOK
                                     </p>
                                 </div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-auto">
@@ -185,10 +196,8 @@
                                 </p>
                             </div>
                         </div>
-                    @endif
-                @endforeach
-
-                @if (!$hasUpcomingStays)
+                    @endforeach
+                @else
                     <h4 class="px-4 font-medium text-gray-900 dark:text-gray-100">
                         No upcoming stays
                     </h4>
@@ -203,17 +212,9 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <p class="font-semibold text-2xl mb-4">Previous Stays</p>
-
-                @php
-                    $hasPreviousStays = false;
-                @endphp
-
                 <div class="divide-y divide-gray-300 dark:divide-gray-700">
-                    @foreach ($booking as $book)
-                        @if (Auth::user() && $book->userId === Auth::user()->id && time() > strtotime($book->checkOutDato))
-                            @php
-                                $hasPreviousStays = true;
-                            @endphp
+                @if (!empty($previousStays))
+                    @foreach ($previousStays as $stay)
                             <div class="py-4">
                                 <div class="flex justify-between items-center">
                                     <div>
@@ -221,29 +222,27 @@
                                             Fjordview Hotel
                                         </h4>
                                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                                            {{ Carbon\Carbon::parse($book->checkInDato)->format('d M Y') }}
-                                            - {{ Carbon\Carbon::parse($book->checkOutDato)->format('d M Y') }}
+                                            {{ Carbon\Carbon::parse($stay->checkInDato)->format('d M Y') }}
+                                            - {{ Carbon\Carbon::parse($stay->checkOutDato)->format('d M Y') }}
                                         </p>
                                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                                            Duration: {{ Carbon\Carbon::parse($book->checkInDato)->diffInDays(Carbon\Carbon::parse($book->checkOutDato)) }} nights
+                                            Duration: {{ Carbon\Carbon::parse($stay->checkInDato)->diffInDays(Carbon\Carbon::parse($stay->checkOutDato)) }} nights
                                         </p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-sm text-gray-600 dark:text-gray-400">
                                             <span class="font-semibold">Total Cost:</span>
-                                            {{ number_format($book->totalPrice ?? 0, 2) }} NOK
+                                            {{ number_format($stay->price ?? 0, 0) }} NOK
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                        @endif
                     @endforeach
-
-                    @if (!$hasPreviousStays)
-                        <h4 class="px-4 font-medium text-gray-900 dark:text-gray-100">
-                            No previous stays
-                        </h4>
-                    @endif
+                @else
+                    <h4 class="px-4 font-medium text-gray-900 dark:text-gray-100">
+                        No previous stays
+                    </h4>
+                @endif
                 </div>
             </div>
         </div>
