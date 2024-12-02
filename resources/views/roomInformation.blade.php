@@ -7,7 +7,7 @@
                         $roomTypesDisplayed[$room->roomType] = true;
                     @endphp
                     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                        <img class="w-full h-48 object-cover" src="https://sonspa.no/wp-content/uploads/2018/05/Enkeltrom-scaled.jpg" alt="{{ $room->roomType }}">
+                        <img class="w-full h-48 object-cover" src="{{ asset("images/$room->roomType.jpg") }}" alt="{{ $room->roomType }}">
                         <div class="p-6">
                             <div class="flex justify-between items-center">
                                 <div>
