@@ -13,7 +13,7 @@
                             <div class="flex justify-between items-center">
                                 <div>
                                     <span class="text-lg text-gray-800">{{ $room->roomType }}</span>
-                                    <small class="ml-2 text-sm text-gray-600">{{ $room->places }} personer</small>
+                                    <small class="ml-2 text-sm text-gray-600">{{ $room->places }} guest(s)</small>
                                     <small class="ml-2 text-sm text-gray-600">{{ $room->beds }}</small>
                                 </div>
                             </div>
