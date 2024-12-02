@@ -46,9 +46,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <template x-for="room in Array.from({ length: numRooms }, (_, i) => i + 1)" :key="room">
                             <div class="border p-4 rounded shadow-sm bg-gray-50">
-                                <h4 class="text-gray-900 dark:text-gray-100 mb-2">Room <span x-text="room"></span></h4>
+                                <h4 class="text-gray-900 mb-2">Room <span x-text="room"></span></h4>
                                 <div class="flex items-center">
-                                    <label class="text-gray-900 dark:text-gray-100 mr-2">Guests:</label>
+                                    <label class="text-gray-900 mr-2">Guests:</label>
                                     <input type="number" :name="`rooms[${room}][places]`" min="1" value="1" class="border p-1 rounded w-16">
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                 <svg class="h-8 w-8 text-slate-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
-                  <p>Contact us for help to book more than 5 rooms.</p>
+                  <p class="text-gray-900 dark:text-gray-100">Contact us for help to book more than 5 rooms.</p>
         </div>
 
     </div>

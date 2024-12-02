@@ -66,6 +66,8 @@ Route::resource('roomInformation', RoomInformationController::class)
 
     Route::post('/add_booking', [BookingController::class, 'add_booking'])->name('add_booking');
     Route::post('/search_room', [BookingController::class, 'search_room'])->name('search.room');
+    Route::post('/search_date', [BookingController::class, 'search_date'])->name('search.date');
+    Route::post('/selectAvailableRoom', [BookingController::class, 'selectAvailableRoom'])->name('selectAvailableRoom');
     Route::get('detailedroom', [BookingController::class, 'viewdetail']);
     Route::post('/booking_overview', [BookingController::class, 'booking_overview'])->name('booking_overview');
     Route::post('/create_booking', [BookingController::class, 'create_booking'])->name('create_booking');
