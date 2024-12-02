@@ -177,11 +177,7 @@
                             <div class="mt-4 flex justify-between items-center">
                                 <div>
                                     <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        <span class="font-semibold">Rooms:</span> {{ $book->numRooms }} |
-                                        <span class="font-semibold">Guests:</span> {{ $book->totalGuests ?? 'N/A' }}
-                                    </p>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        <span class="font-semibold">Total Price:</span> {{ number_format($book->totalPrice ?? 0, 2) }} NOK
+                                        <span class="font-semibold">Total Price:</span> {{ number_format($book->price ?? 0, 0) }} NOK
                                     </p>
                                 </div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-auto">
