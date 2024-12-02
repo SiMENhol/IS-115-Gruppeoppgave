@@ -35,7 +35,7 @@ class RoomController extends Controller
             $validatedData = $request->validate([ // Validates the input from the form
                 'roomType' => 'required|string|max:255',
                 'places' => 'required|integer|in:0,1,2,3,4',
-                'beds' => 'required|integer|in:0,1,2,3,4',
+                'beds' => 'required|string|max:255',
                 'roomDesc' => 'nullable|string',
                 'price' => 'required|integer|min:0',
             ]);
