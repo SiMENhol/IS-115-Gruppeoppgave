@@ -12,6 +12,7 @@
                 @csrf
                 <input type="hidden" name="userCheckIn" value="{{ $userCheckIn }}">
                 <input type="hidden" name="userCheckOut" value="{{ $userCheckOut }}">
+                <input type="hidden" name="totalPrice" value="{{ $totalPrice }}">
                 <input type="hidden" name="selectedRooms" value="{{ implode(',', $selectedRooms) }}">
 
 
@@ -26,12 +27,15 @@
                     <input type="text" placeholder="Card details">
                     <input type="text" placeholder="Card details">
                 </div>
-
-
+                        <x-primary-button class="ms-3">
+                            <a href="{{ route('dashboard') }}" class="text-white no-underline">
+                                Go back to Dashboard
+                            </a>
+                        </x-primary-button>
                         <x-primary-button class="ms-3">
                             Confirm payment
                         </x-primary-button>
-
+                    </div>
                 </div>
             </form>
         </div>

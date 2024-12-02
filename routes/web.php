@@ -31,7 +31,9 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 });
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('admin/users/users', [AdminController::class, 'viewUsers'])->name('admin.users.users');
+    Route::get('admin/users/adduser', [AdminController::class, 'addUser'])->name('admin.users.adduser');
 });
+
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('admin/users/selecteduser', [AdminController::class, 'viewSelectedUser'])->name('admin.selecteduser');
@@ -51,12 +53,15 @@ Route::resource('roomInformation', RoomInformationController::class)
         Route::get('admin/room', [RoomController::class, 'index'])->name('room');
     });
 
+
+    Route::delete('room/{roomId}', [RoomController::class, 'destroy'])->name('room.destroy');
+
     Route::middleware(['auth', IsAdmin::class])->group(function () {
         Route::get('/admin/room', [RoomController::class, 'index'])->name('room');
         Route::get('/admin/room/create', [RoomController::class, 'create'])->name('room.create');
         Route::get('/admin/room/edit/{roomId}', [RoomController::class, 'edit'])->name('room.edit');
         Route::patch('/admin/room/edit/{roomId}', [RoomController::class, 'update'])->name('room.update');
-        //Route::delete('/room', [RoomController::class, 'destroy'])->name('room.destroy');
+        Route::delete('/room/{roomId}', [RoomController::class, 'destroy'])->name('room.destroy');
     });
 
     Route::post('/add_booking', [BookingController::class, 'add_booking'])->name('add_booking');

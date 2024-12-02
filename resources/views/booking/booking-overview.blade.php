@@ -14,7 +14,6 @@
                     <thead>
                         <tr>
                             <th class="text-left">Room</th>
-                            <th class="text-left">Guest(s)</th>
                             <th class="text-left">Price Per Night</th>
                             <th class="text-left">Total Price</th>
                         </tr>
@@ -24,7 +23,6 @@
                             <tr>
 
                                 <td>{{ $room->roomType }}</td>
-                                <td>{{ $room->places }}</td>
                                 <td>{{ $room->price }} NOK</td>
                                 <td>{{ $room->price * $numNights }} NOK</td>
                             </tr>
@@ -48,9 +46,15 @@
 
                 <div class="p-4 flex justify-center" >
                     <x-primary-button class="ms-3">
-                        Pay now!
+                        <a href="{{ route('dashboard') }}" class="text-white no-underline">
+                            Go back to Dashboard
+                        </a>
                     </x-primary-button>
 
+                    <x-primary-button class="ms-3">
+                        Pay now!
+                    </x-primary-button>
+                    </div>
             </form>
         </div>
     </div>

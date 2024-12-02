@@ -13,6 +13,27 @@
                     <p><strong>You will have the room(s) until :</strong> {{ $checkOut }} <strong>12:00</strong></p>
                     <p><strong>Hope you have wonderful stay!</strong> </p>
                 </div>
+
+                <div class="p-6">
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left">You have booked the following rooms</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($rooms as $room)
+                                <tr>
+                                    <td>A {{ $room->roomType }} room</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                    <div class="p-6">
+                        <p>Total price paid {{$price}}</p>
+                </div>
+
                 <div class="p-4 flex justify-center" >
                 <x-primary-button class="ms-3">
                     <a href="{{ route('dashboard') }}" class="text-white no-underline">

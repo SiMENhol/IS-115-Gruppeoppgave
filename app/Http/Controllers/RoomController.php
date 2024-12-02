@@ -14,10 +14,9 @@ class RoomController extends Controller
      */
     public function index() : View
     {
-        $rooms = Room::all(); // Retrieve all records from the users table
-        return view('admin.room.room', compact('rooms')); // Pass data to the view
+        $rooms = Room::all(); // Gets all the data from model Room, which corresponds to the database
+        return view('admin.room.room', compact('rooms')); // Returns view with compact sending the variables to the view
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -28,69 +27,67 @@ class RoomController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Save a newly created room to the database.
      */
     public function store(Request $request)
     {
         {
-            $validatedData = $request->validate([
+            $validatedData = $request->validate([ // Validates the input from the form
                 'roomType' => 'required|string|max:255',
-                'places' => 'required|integer|min:1',
-                'roomStatus' => 'required|integer|in:0,1,2,3',
+                'places' => 'required|integer|in:0,1,2,3,4',
+                'beds' => 'required|integer|in:0,1,2,3,4',
                 'roomDesc' => 'nullable|string',
                 'price' => 'required|integer|min:0',
-
             ]);
 
-            Room::create($validatedData);
+            Room::create($validatedData); // Creates a entry in the database from the data in validates
 
-            // Redirect to a page with success message
-            return redirect()->route('room');
+            return redirect()->route('room'); // Redirect after done
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($roomId)//string $id)
+    public function edit($roomId) // string $id)
     {
         $room = Room::findOrFail($roomId); // Find the room by ID or throw a 404 error
 
-        return view('admin.room.edit', compact('room'));
+        return view('admin.room.edit', compact('room')); // Redirect after done
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in database.
      */
     public function update(Request $request, $roomId)
     {
-        $validatedData = $request->validate([
+        $validatedData = $request->validate([ // Validates the input from the form
             'roomType' => 'required|string|max:255',
-            'places' => 'required|integer|min:1',
-            'roomStatus' => 'required|integer|in:0,1,2,3',
+            'places' => 'required|integer|in:0,1,2,3,4',
+            'beds' => 'required|integer|in:0,1,2,3,4',
             'roomDesc' => 'nullable|string',
             'price' => 'required|integer|min:0',
         ]);
 
-        $room = Room::findOrFail($roomId);
-        $room->update($validatedData);
+        $room = Room::findOrFail($roomId); // Find the room by ID or throw a 404 error
+        $room->update($validatedData); // Updates a entry in the database from the data in validates
 
-        return redirect()->route('room');
+        return redirect()->route('room'); // Redirect after done
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($roomId)
     {
-        //
+    // Find the room by ID or throw a 404 error
+    $room = Room::findOrFail($roomId);
+
+    // Delete the room from the database
+    $room->delete();
+
+    // Redirect to the room listing with a success message
+    return redirect()->route('room')->with('success', 'Room deleted successfully.');
     }
+
 }
