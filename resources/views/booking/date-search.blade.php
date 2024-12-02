@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="bg-white shadow-sm rounded-lg divide-y mt-4">
-            <div class="p-6 text-gray-100">
+            <div class="p-6">
                 @if (Auth::user())
                 <form action="{{ url('selectAvailableRoom') }}" method="POST">
                 @else
