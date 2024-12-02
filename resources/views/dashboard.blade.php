@@ -76,7 +76,7 @@
         <!-- Hero Section -->
         <div class="relative">
             <img
-                src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/257878219.jpg?k=96661c8471677c814e6df155d529c64ad61692dfc07e74c47dd6a079dbf87799&o=&hp=1"
+                src="{{ asset('images/hotel.jpg') }}"
                 alt="Hotel Exterior"
                 class="w-full h-[500px] object-cover"
             >
