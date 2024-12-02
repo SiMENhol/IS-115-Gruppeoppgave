@@ -148,11 +148,11 @@
         @if (Auth::user() && $book->userId === Auth::user()->id)
             @if (!array_key_exists($book->groupBookingId, $upcomingStays) && time() < strtotime($book->checkOutDato))
                 @php
-                    $upcomingStays[$book->groupBookingId, $book];
+                    $upcomingStays[$book->groupBookingId] = $book;
                 @endphp
             @elseif (!array_key_exists($book->groupBookingId, $previousStays) && time() > strtotime($book->checkOutDato))
                 @php
-                    $previousStays[$book->groupBookingId, $book];
+                    $previousStays[$book->groupBookingId] = $book;
                 @endphp
             @endif
         @endif
