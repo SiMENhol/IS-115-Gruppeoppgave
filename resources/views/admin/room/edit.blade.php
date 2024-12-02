@@ -38,7 +38,7 @@
         <!-- Places -->
         <div class="mt-4">
             <x-input-label for="beds" :value="__('Number of beds')" />
-            <x-text-input id="beds" class="block mt-1 w-full" type="text" name="beds" :value="$room->beds" required min="1" />
+            <x-text-input id="beds" class="block mt-1 w-full" type="text" name="beds" :value="$room->beds" required />
             <x-input-error :messages="$errors->get('beds')" class="mt-2" />
         </div>
 
