@@ -1,28 +1,3 @@
-<style>
-    label {
-        margin: 10px;
-    }
-    input[type=date] {
-        min-width: 200px;
-    }
-    input[type=number] {
-        max-width: 100px;
-    }
-    form {
-        margin: 0;
-    }
-    #searchAvailableRooms {
-        border: 2px solid white;
-        border-radius: 5px;
-        padding: 8px 30px;
-        background-color: #007D93;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        float: right;
-    }
-</style>
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -35,49 +10,60 @@
     </x-slot>
 
     <div class="py-12">
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form action="{{ url('search_room') }}" method="POST">
+                    @if (Auth::user())
+                        <form action="{{ url('search_room') }}" method="POST" x-data="{ numRooms: 1 }" class="flex flex-col gap-4">
+                    @else
+                        <form action="{{ url('search_room_noId') }}" method="POST" x-data="{ numRooms: 1 }" class="flex flex-col gap-4">
+                    @endif
                         @csrf
+                        <!-- Main Input Row -->
+                        <div class="flex flex-wrap items-center gap-4">
+                            <!-- Check-in Date -->
+                            <div class="flex items-center space-x-2">
+                                <label for="checkInDato" class="text-gray-900 dark:text-gray-100">Check in:</label>
+                                <input id="checkInDato" class="border rounded p-2 w-36" type="date" name="checkInDato" value="{{ old('checkInDato') }}" required />
+                            </div>
 
+                            <!-- Check-out Date -->
+                            <div class="flex items-center space-x-2">
+                                <label for="checkOutDato" class="text-gray-900 dark:text-gray-100">Check out:</label>
+                                <input id="checkOutDato" class="border rounded p-2 w-36" type="date" name="checkOutDato" value="{{ old('checkOutDato') }}" required />
+                            </div>
 
-                        <div class="mt-4 flex items-center space-x-4">
-                            <label for="checkInDato" class="text-gray-900 dark:text-gray-100">Arrival:</label>
-                            <input type="date" id="checkInDato" name="checkInDato" class="border p-1 rounded w-48" required>
+                            <!-- Number of Rooms -->
+                            <div class="flex items-center space-x-2">
+                                <label for="numRooms" class="text-gray-900 dark:text-gray-100">Rooms:</label>
+                                <select id="numRooms" name="numRooms" x-model="numRooms" class="border p-2 rounded w-32">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
 
-
-
-                            <label for="checkOutDato" class="text-gray-900 dark:text-gray-100">Departure:</label>
-                            <input type="date" id="checkOutDato" name="checkOutDato" class="border p-1 rounded w-48" required>
-                        </div>
-
-
-                        <div x-data="{ numRooms: 1 }" class="mb-6 mt-4">
-                            <label for="numRooms" class="text-gray-900 dark:text-gray-100">How many rooms would you need?:</label>
-                            <select id="numRooms" name="numRooms" x-model="numRooms" class="border p-2 rounded w-48">
-                                @for ($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-
-                            <div class="mt-4 space-y-4 border p-2 rounded w-48">
-                                <template x-for="room in Array.from({ length: numRooms }, (_, i) => i + 1)" :key="room">
-                                    <div class="border p-4 rounded shadow-sm">
-                                        <h4 class="text-gray-900 dark:text-gray-100">Room <span x-text="room"></span></h4>
-                                        <div class="flex items-center space-x-4 mt-2">
-                                            <label class="text-gray-900 dark:text-gray-100">Guests:</label>
-                                            <input type="number" :name="`rooms[${room}][places]`" min="1" value="1" class="border p-1 rounded w-16">
-                                        </div>
-                                    </div>
-                                </template>
+                            <!-- Search Button -->
+                            <div class="ml-auto">
+                                <button type="submit" id="searchAvailableRooms" class="bg-blue-500 text-white rounded p-2 px-4 hover:bg-blue-600">
+                                    Search
+                                </button>
                             </div>
                         </div>
 
-
-                        <button type="submit" id="searchAvailableRooms" >
-                            Look for room
-                        </button>
+                        <!-- Dynamic Guests Per Room -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+                            <template x-for="room in Array.from({ length: numRooms }, (_, i) => i + 1)" :key="room">
+                                <div class="border p-4 rounded shadow-sm bg-gray-50">
+                                    <h4 class="text-gray-900 dark:text-gray-100 mb-2">Room <span x-text="room"></span></h4>
+                                    <div class="flex items-center">
+                                        <label class="text-gray-900 dark:text-gray-100 mr-2">Guests:</label>
+                                        <input type="number" :name="`rooms[${room}][places]`" min="1" value="1" class="border p-1 rounded w-16">
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -99,16 +85,16 @@
                 <p class="text-lg md:text-xl mt-2">Your luxury getaway in the heart of Norway.</p>
 
                 <x-nav-link :href="route('roomInformation.index')" :active="request()->routeIs('roomInformation.index')"
-                    class="mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
                 >
-                    Explore Rooms
+                    <span class="mt-2">Explore Rooms</span>
                 </x-nav-link>
                 </button>
             </div>
         </div>
 
         <!-- Key Features Section -->
-        <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-900 dark:text-gray-100">
+        <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Feature 1 -->
             <div class="flex flex-col items-center text-center">
                 <svg class="h-12 w-12 mb-4 mt-4" fill="currentColor" width="35" height="35" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#000000">
@@ -157,8 +143,16 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <p class="font-semibold text-2xl mb-4">Upcoming Stays</p>
+
+                @php
+                    $hasUpcomingStays = false;
+                @endphp
+
                 @foreach ($booking as $book)
-                    @if ($book->userId === Auth::user()->id && time() < strtotime($book->checkOutDato))
+                    @if (Auth::user() && $book->userId === Auth::user()->id && time() < strtotime($book->checkOutDato))
+                        @php
+                            $hasUpcomingStays = true;
+                        @endphp
                         <div class="mb-6 p-4 border rounded-lg shadow-md bg-gray-100 dark:bg-gray-900">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -173,35 +167,57 @@
                                         Duration: {{ Carbon\Carbon::parse($book->checkInDato)->diffInDays(Carbon\Carbon::parse($book->checkOutDato)) }} nights
                                     </p>
                                 </div>
-                                <div>
-                                    <button class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded shadow-md hover:bg-blue-600 transition">
-                                        View Details
-                                    </button>
+                                <div class="ml-auto">
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 text-right">
+                                        Check in from 15:00<br>
+                                        Check out 12:00
+                                    </p>
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <p class="text-sm text-gray-700 dark:text-gray-300">
-                                    <span class="font-semibold">Rooms:</span> {{ $book->numRooms }} |
-                                    <span class="font-semibold">Guests:</span> {{ $book->totalGuests ?? 'N/A' }}
-                                </p>
-                                <p class="text-sm text-gray-700 dark:text-gray-300">
-                                    <span class="font-semibold">Total Price:</span> {{ number_format($book->totalPrice ?? 0, 2) }} NOK
+                            <div class="mt-4 flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <span class="font-semibold">Rooms:</span> {{ $book->numRooms }} |
+                                        <span class="font-semibold">Guests:</span> {{ $book->totalGuests ?? 'N/A' }}
+                                    </p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <span class="font-semibold">Total Price:</span> {{ number_format($book->totalPrice ?? 0, 2) }} NOK
+                                    </p>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-auto">
+                                    Call us if you expect to arrive later than 22:00
                                 </p>
                             </div>
                         </div>
                     @endif
                 @endforeach
+
+                @if (!$hasUpcomingStays)
+                    <h4 class="px-4 font-medium text-gray-900 dark:text-gray-100">
+                        No upcoming stays
+                    </h4>
+                @endif
             </div>
         </div>
     </div>
+
     <br>
+
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <p class="font-semibold text-2xl mb-4">Previous Stays</p>
+
+                @php
+                    $hasPreviousStays = false;
+                @endphp
+
                 <div class="divide-y divide-gray-300 dark:divide-gray-700">
                     @foreach ($booking as $book)
-                        @if ($book->userId === Auth::user()->id && time() > strtotime($book->checkOutDato))
+                        @if (Auth::user() && $book->userId === Auth::user()->id && time() > strtotime($book->checkOutDato))
+                            @php
+                                $hasPreviousStays = true;
+                            @endphp
                             <div class="py-4">
                                 <div class="flex justify-between items-center">
                                     <div>
@@ -226,10 +242,17 @@
                             </div>
                         @endif
                     @endforeach
+
+                    @if (!$hasPreviousStays)
+                        <h4 class="px-4 font-medium text-gray-900 dark:text-gray-100">
+                            No previous stays
+                        </h4>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
     <br>
 </x-app-layout>
 
