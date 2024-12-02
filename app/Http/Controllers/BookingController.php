@@ -212,6 +212,19 @@ class BookingController extends Controller
         return view('booking.search-room-noId');
     }
 
+    /**
+     * When the user selects a room type, display a page where the user enters dates
+     */
+    public function search_date(Request $request)
+    {
+        $validated = $request->validate(['roomType' => 'required|string|max:255']); // Validate request
+        $roomType = $validated['roomType']; // Extract the roomType from the request
+
+        return view('booking.date-search', [
+            'roomType' => $roomType,
+        ]);
+    }
+
 
 
     //Under is helper methods
@@ -259,5 +272,62 @@ class BookingController extends Controller
                 return $group->first(); // Get the first room of each type
             })
             ->values();
+    }
+
+    /**
+     *
+     */
+    public function selectAvailableRoom(Request $request)
+    {
+        $validated = $request->validate([
+            'roomType' => 'required|string|max:255',
+            'checkInDato' => 'required|date|after_or_equal:today',
+            'checkOutDato' => 'required|date|after:checkInDato',
+        ]); // Validate request
+
+        $roomType = $validated['roomType'];
+        $rooms = Room::where('roomType', $roomType)->get(); // Retrieve rooms of the specified type
+
+        // Parse and set the user's check-in and check-out dates with specific times.
+        $userCheckIn = Carbon::parse($validated['checkInDato'])->setTime(15, 0);
+        $userCheckOut = Carbon::parse($validated['checkOutDato'])->setTime(12, 0);
+
+        // Initialize variables for tracking availability.
+        $availableRooms = []; // Stores available rooms for each requested room type.
+        $usedRoomIds = []; // Tracks room IDs that have already been assigned.
+
+        // Loop through each room type requested by the user.
+        foreach ($rooms as $index => $details) {
+            $availableRoomsForThisSelection = $this->getAvailableRooms( // Check availability for the current room type.
+                $details['places'],
+                $usedRoomIds,
+                $userCheckIn,
+                $userCheckOut
+            );
+
+            // If no rooms are available for the current selection, redirect with an error message.
+            if ($availableRoomsForThisSelection->isEmpty()) {
+                return redirect()->back()->withErrors(['message' => "No rooms available for the selected dates."]);
+            }
+
+            $availableRooms[$index + 1] = $availableRoomsForThisSelection; // Add the available rooms for this selection to the result array.
+            $usedRoomIds = array_merge($usedRoomIds, $availableRoomsForThisSelection->pluck('roomId')->toArray()); // Update the list of used room IDs to prevent duplication in subsequent selections.
+        }
+
+        // Select the first room that matches the required roomType
+        foreach ($availableRooms['1'] as $room) {
+            if ($room['roomType'] === $roomType) {
+                $selectedRooms = [$room];
+                break;
+            }
+        }
+
+        $bookingRequest = new Request([
+            'selectedRooms' => collect($selectedRooms)->pluck('roomId')->toArray(), // Extract room IDs
+            'userCheckIn' => $userCheckIn->toDateString(),
+            'userCheckOut' => $userCheckOut->toDateString(),
+        ]);
+
+        return $this->booking_overview($bookingRequest);
     }
 }
