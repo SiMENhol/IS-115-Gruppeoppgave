@@ -9,6 +9,3 @@ Du finner følgende mapper her:
 * Views under /resources/views
 * Controllers under /app/Http/Controllers
 
-
-
-Test123
